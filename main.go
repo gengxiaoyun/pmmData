@@ -12,6 +12,11 @@ import (
 	simplejson "github.com/bitly/go-simplejson"
 )
 
+var (
+	err error
+	logFileName = flag.String("./log", "NodeExporter.log", "Log file name")
+)
+
 const(
 	nodeCpuSecondsTotalRange = "http://192.168.186.137/prometheus/api/v1/query_range?query=" +
 		"node_cpu_seconds_total{node_name=%22ubuntu%22}&" +
@@ -73,10 +78,6 @@ func JsonProcess(url string) error{
 }
 
 func main() {
-	var (
-		err error
-		logFileName = flag.String("./log", "NodeExporter.log", "Log file name")
-	)
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	flag.Parse()
 	//set logfile Stdout
