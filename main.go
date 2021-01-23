@@ -94,11 +94,13 @@ func main() {
 	err = JsonProcess("http://192.168.186.137/prometheus/api/v1/query_range?query=" +
 		"node_cpu_seconds_total{node_name=%22ubuntu%22}&" +
 		"start=1611196430&end=1611196440&step=10")
-
+	if err!=nil{
+		log.Println(err.Error())
+	}
 	// query
 	log.Println("query=node_cpu_seconds_total\n")
-	err = JsonProcess("http://192.168.186.137/prometheus/api/v1/query?query=node_cpu_seconds_total{node_name=%22ubuntu%22}")
-
+	err = JsonProcess("http://192.168.186.137/prometheus/api/v1/query?query=" +
+		"node_cpu_seconds_total{node_name=%22ubuntu%22}")
 	if err!=nil{
 		log.Println(err.Error())
 	}
