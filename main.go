@@ -19,10 +19,10 @@ var (
 
 const(
 	nodeCpuSecondsTotalRange = "http://192.168.186.137/prometheus/api/v1/query_range?query=" +
-		"node_cpu_seconds_total{node_name=%22ubuntu%22}&" +
+		"sum(node_cpu_seconds_total)by(instance,node_name,mode)&" +
 		"start=1611196430&end=1611196440&step=10"
 	nodeCpuSecondsTotal = "http://192.168.186.137/prometheus/api/v1/query?query=" +
-		"node_cpu_seconds_total{node_name=%22ubuntu%22}"
+		"sum(node_cpu_seconds_total)by(instance,node_name,mode)"
 )
 
 func HttpProcess(url string) (string,error) {
@@ -60,8 +60,8 @@ func JsonProcess(url string) error{
 	for _, row := range result {
 		if each_map, ok := row.(map[string]interface{}); ok {
 			if eachMapMetric, ok := each_map["metric"].(map[string]interface{}); ok {
-				log.Printf("metric:{cpu=%s,mode=%s,node_name=%s}\n", eachMapMetric["cpu"],
-					eachMapMetric["mode"], eachMapMetric["node_name"])
+				log.Printf("metric:{instance=%s,node_name=%s,mode=%s}\n",eachMapMetric["instance"],
+					eachMapMetric["node_name"],eachMapMetric["mode"])
 			}
 			if eachMapValues, ok := each_map["values"].([]interface{}); ok {
 				for i := 0; i < len(eachMapValues); i++ {
