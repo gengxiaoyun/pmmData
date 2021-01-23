@@ -12,6 +12,14 @@ import (
 	simplejson "github.com/bitly/go-simplejson"
 )
 
+const(
+	nodeCpuSecondsTotalRange = "http://192.168.186.137/prometheus/api/v1/query_range?query=" +
+		"node_cpu_seconds_total{node_name=%22ubuntu%22}&" +
+		"start=1611196430&end=1611196440&step=10"
+	nodeCpuSecondsTotal = "http://192.168.186.137/prometheus/api/v1/query?query=" +
+		"node_cpu_seconds_total{node_name=%22ubuntu%22}"
+)
+
 func HttpProcess(url string) (string,error) {
 	req,err:=http.NewRequest("GET",url,nil)
 	req.SetBasicAuth("admin","123456")
@@ -91,16 +99,13 @@ func main() {
 
 	// query_range
 	log.Println("query=node_cpu_seconds_total, start=1611196430, end=1611196440, step=10\n")
-	err = JsonProcess("http://192.168.186.137/prometheus/api/v1/query_range?query=" +
-		"node_cpu_seconds_total{node_name=%22ubuntu%22}&" +
-		"start=1611196430&end=1611196440&step=10")
+	err = JsonProcess(nodeCpuSecondsTotalRange)
 	if err!=nil{
 		log.Println(err.Error())
 	}
 	// query
 	log.Println("query=node_cpu_seconds_total\n")
-	err = JsonProcess("http://192.168.186.137/prometheus/api/v1/query?query=" +
-		"node_cpu_seconds_total{node_name=%22ubuntu%22}")
+	err = JsonProcess(nodeCpuSecondsTotal)
 	if err!=nil{
 		log.Println(err.Error())
 	}
